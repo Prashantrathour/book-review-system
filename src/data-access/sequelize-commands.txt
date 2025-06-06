@@ -1,3 +1,0 @@
-# link - https://sequelize.org/master/manual/migrations.html
-
-npx sequelize model:generate --name Employee --attributes firstName:string,lastName:string,age:integer

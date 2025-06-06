@@ -1,1 +1,0 @@
-# in this folder you will make the data process from the app

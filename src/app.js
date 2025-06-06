@@ -1,30 +1,32 @@
-const express = require("express");
-const dotenv = require("dotenv");
-const cors = require("cors");
+const express = require('express');
+const cors = require('cors');
+const helmet = require('helmet');
+const morgan = require('morgan');
+const authRoutes = require('./routes/authRoutes');
+const bookRoutes = require('./routes/bookRoutes');
+const reviewRoutes = require('./routes/reviewRoutes');
+const errorHandler = require('./middleware/errorHandler');
+require('./models'); // Initialize models and associations
 
-dotenv.config();
 const app = express();
 
-// accessible to any
-app.use(cors());
+// Middleware
+app.use(helmet()); // Security headers
+app.use(cors()); // Enable CORS
+app.use(morgan('dev')); // Logging
+app.use(express.json()); // Parse JSON bodies
 
-// Body Parser middleware to handle raw JSON files
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+// Routes
+app.use('/auth', authRoutes);
+app.use('/books', bookRoutes);
+app.use('/', reviewRoutes);
 
-const PORT = process.env.PORT || 8001;
+// Error handling
+app.use(errorHandler);
 
-const server = app.listen(PORT, () => {
-  console.log(`Server is listening on port ${PORT}.`);
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({ error: 'Not Found' });
 });
 
-// routes
-app.use("/api/v1", require("./routes/app"));
-
-
-// when invalid routes are entered
-app.use(async (req, res) => {
-  res.status(404).send(`Route is no where to be found.`);
-});
-
-module.exports = server;
+module.exports = app; 

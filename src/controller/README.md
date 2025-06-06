@@ -1,1 +1,0 @@
-# in this folder you will make the controller which communicates to the app

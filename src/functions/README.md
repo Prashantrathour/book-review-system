@@ -1,1 +1,0 @@
-# in this folder you will make your global functions
